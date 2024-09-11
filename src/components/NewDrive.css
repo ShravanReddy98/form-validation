@@ -1,0 +1,18 @@
+
+.driveForm{
+    padding: 15px;
+    display: flex; 
+    flex-direction: column;
+    gap: 15px;
+    
+    >div{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        >div{
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+    }
+}
