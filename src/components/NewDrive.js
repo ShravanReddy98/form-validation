@@ -152,7 +152,7 @@ const NewDrive = () => {
 
   const handleAddDummy = () => {
     setJobDetails(prev=>({...prev, ...dummyData }));
-    setJobErrors(prev=>({...prev,initialErrors}));
+    setJobErrors({...initialErrors});
   };
 
   const validate = (field, value) => {
