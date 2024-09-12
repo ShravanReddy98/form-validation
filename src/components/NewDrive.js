@@ -125,6 +125,7 @@ const NewDrive = () => {
     yearOfPassing: null,
     backlogAllowed: null,
     sslcPer: null,
+    stream: null,
     diplomaPer: null,
     graduateMinPer: null,
     gapInEducation: null,
@@ -196,7 +197,7 @@ const NewDrive = () => {
       validate("genderPreference", genderPreference) &&
       validate("qualification", qualification) &&
       validate("yearOfPassing", yearOfPassing) &&
-      //   validate("stream",stream) &&
+        validate("stream",stream) &&
       validate("backlogAllowed", backlogAllowed) &&
       validate("sslcPer", sslcPer) &&
       validate("diplomaPer", diplomaPer) &&
@@ -206,6 +207,7 @@ const NewDrive = () => {
       validate("modeOfInterview", modeOfInterview) &&
       validate("firstRoundDate", firstRoundDate) &&
       validate("expiresIn", expiresIn)
+      //  && expiresIn<firstRoundDate
     ) {
       dispatch(actions.addDrivesRequest(jobDetails));
 
@@ -258,7 +260,15 @@ const NewDrive = () => {
       validate("interviewRounds", interviewRounds);
       validate("modeOfInterview", modeOfInterview);
       validate("firstRoundDate", firstRoundDate);
-      validate("expiresIn", expiresIn);
+        validate("stream",stream) ;
+        validate("expiresIn", expiresIn);
+        if(
+      skills.length <= 0 
+      ){
+        const error = 'skills are required*';
+      setJobErrors((prev) => ({ ...prev, skills: error }));
+      return false;
+      }
     }
   };
 
@@ -276,8 +286,6 @@ const NewDrive = () => {
               type={"text"}
               value={jobDetails.jobId}
               fun={handleChange}
-              error={jobErrors.jobId}
-              required={true}
             />
             <Select
               name={"companyName"}
