@@ -60,29 +60,29 @@ const jobLocations = ["bangalore", "hyderabad", "pune"];
 
 const genderPreferences = ["male", "female", "male & female"];
 
-const qualifications=["BCA","BCOM","BSc","BTech","MCA","MTech"]
+const qualifications = ["BCA", "BCOM", "BSc", "BTech", "MCA", "MTech"];
 
-const streams=["computer science","electrical","mechanical"]
+const streams = ["computer science", "electrical", "mechanical"];
 
-const yearOfPassings=["2018","2019","2020","2021","2022","2023","2024"];
+const yearOfPassings = ["2018", "2019", "2020", "2021", "2022", "2023", "2024"];
 
-const backlogAlloweds=["yes","no"]
+const backlogAlloweds = ["yes", "no"];
 
-const gapInEducations=["allowed","notAllowed"]
+const gapInEducations = ["allowed", "notAllowed"];
 
-const modeOfInterviews=["online","offline","online & offline"]
+const modeOfInterviews = ["online", "offline", "online & offline"];
 
-const relocations=["Yes","No"]
+const relocations = ["Yes", "No"];
 
-const certificateSubmission=["Yes","No"]
+const certificateSubmission = ["Yes", "No"];
 
-const shifts=["morning","night","based on project","rotational shift"]
+const shifts = ["morning", "night", "based on project", "rotational shift"];
 
-const interviewType=["technical","nonTechnical"]
+const interviewType = ["technical", "nonTechnical"];
 
 const NewDrive = () => {
   const dispatch = useDispatch();
-  const initialDrive={
+  const initialDrive = {
     jobId: "",
     companyName: "",
     jobTitle: "",
@@ -113,8 +113,28 @@ const NewDrive = () => {
     minEmployabilityScore: "",
     interviewType: "",
     UploadJd: "",
-  }
+  };
+  const initialErrors = {
+    companyName: null,
+    jobTitle: null,
+    jobRole: null,
+    jobLocation: null,
+    Package: null,
+    genderPreference: null,
+    qualification: null,
+    yearOfPassing: null,
+    backlogAllowed: null,
+    sslcPer: null,
+    diplomaPer: null,
+    graduateMinPer: null,
+    gapInEducation: null,
+    interviewRounds: null,
+    modeOfInterview: null,
+    firstRoundDate: null,
+    expiresIn: null,
+  };
   const [jobDetails, setJobDetails] = useState(initialDrive);
+  const [jobErrors, setJobErrors] = useState(initialErrors);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -122,12 +142,26 @@ const NewDrive = () => {
       ...prev,
       [name]: value,
     }));
+    setJobErrors((prev) => ({
+      ...prev,
+      [name]: null,
+    }));
+    console.log(jobErrors[name]);
   };
 
   const handleAddDummy = () => {
     setJobDetails({ ...dummyData });
+    setJobErrors(initialErrors);
   };
 
+  const validate = (field, value) => {
+    if (value === "") {
+      const error = `${field} is required`;
+      setJobErrors((prev) => ({ ...prev, [field]: error }));
+      return false;
+    }
+    return true;
+  };
 
   const handleCreate = () => {
     const {
@@ -153,29 +187,28 @@ const NewDrive = () => {
     } = jobDetails;
 
     if (
-      companyName !== "" &&
-      jobTitle !== "" &&
-      jobRole !== "" &&
-      jobLocation !== "" &&
-      Package !== "" &&
+      validate("companyName", companyName) &&
+      validate("jobTitle", jobTitle) &&
+      validate("jobRole", jobRole) &&
+      validate("jobLocation", jobLocation) &&
+      validate("Package", Package) &&
       skills.length > 0 &&
-      genderPreference !== "" &&
-      qualification !== "" &&
-      yearOfPassing !== "" &&
-    //   stream !== "" &&
-      backlogAllowed !== "" &&
-      sslcPer !== "" &&
-      diplomaPer !== "" &&
-      graduateMinPer !== "" &&
-      gapInEducation !== "" &&
-      interviewRounds !== "" &&
-      modeOfInterview !== "" &&
-      firstRoundDate !== "" &&
-      expiresIn !== "" 
+      validate("genderPreference", genderPreference) &&
+      validate("qualification", qualification) &&
+      validate("yearOfPassing", yearOfPassing) &&
+      //   validate("stream",stream) &&
+      validate("backlogAllowed", backlogAllowed) &&
+      validate("sslcPer", sslcPer) &&
+      validate("diplomaPer", diplomaPer) &&
+      validate("graduateMinPer", graduateMinPer) &&
+      validate("gapInEducation", gapInEducation) &&
+      validate("interviewRounds", interviewRounds) &&
+      validate("modeOfInterview", modeOfInterview) &&
+      validate("firstRoundDate", firstRoundDate) &&
+      validate("expiresIn", expiresIn)
     ) {
-
       dispatch(actions.addDrivesRequest(jobDetails));
-      
+
       setJobDetails({
         jobId: "",
         companyName: "",
@@ -207,10 +240,25 @@ const NewDrive = () => {
         minEmployabilityScore: "",
         interviewType: "",
         UploadJd: "",
-      })
-    }
-    else{
-        alert("fill all required fields")
+      });
+    } else {
+      validate("companyName", companyName);
+      validate("jobTitle", jobTitle);
+      validate("jobRole", jobRole);
+      validate("jobLocation", jobLocation);
+      validate("Package", Package);
+      validate("genderPreference", genderPreference);
+      validate("qualification", qualification);
+      validate("yearOfPassing", yearOfPassing);
+      validate("backlogAllowed", backlogAllowed);
+      validate("sslcPer", sslcPer);
+      validate("diplomaPer", diplomaPer);
+      validate("graduateMinPer", graduateMinPer);
+      validate("gapInEducation", gapInEducation);
+      validate("interviewRounds", interviewRounds);
+      validate("modeOfInterview", modeOfInterview);
+      validate("firstRoundDate", firstRoundDate);
+      validate("expiresIn", expiresIn);
     }
   };
 
@@ -228,9 +276,17 @@ const NewDrive = () => {
               type={"text"}
               value={jobDetails.jobId}
               fun={handleChange}
+              error={jobErrors.jobId}
               required={true}
             />
-            <Select name={"companyName"} value={jobDetails.companyName} array={companies} fun={handleChange} />
+            <Select
+              name={"companyName"}
+              value={jobDetails.companyName}
+              array={companies}
+              fun={handleChange}
+              error={jobErrors.companyName}
+              required={true}
+            />
           </div>
         </div>
         <div>
@@ -241,20 +297,30 @@ const NewDrive = () => {
               type={"text"}
               value={jobDetails.jobTitle}
               fun={handleChange}
+              error={jobErrors.jobTitle}
               required={true}
             />
             <Input
               name={"jobRole"}
               type={"text"}
               value={jobDetails.jobRole}
+              error={jobErrors.jobRole}
               required={true}
               fun={handleChange}
             />
-            <Select name={"jobLocation"} value={jobDetails.jobLocation} array={jobLocations} fun={handleChange} />
+            <Select
+              name={"jobLocation"}
+              value={jobDetails.jobLocation}
+              array={jobLocations}
+              fun={handleChange}
+              error={jobErrors.jobLocation}
+              required={true}
+            />
             <Input
               name={"Package"}
               type={"text"}
               value={jobDetails.Package}
+              error={jobErrors.Package}
               required={true}
               fun={handleChange}
             />
@@ -262,6 +328,7 @@ const NewDrive = () => {
               name={"skills"}
               type={"text"}
               value={jobDetails.skills}
+              error={jobErrors.skills}
               required={true}
               fun={handleChange}
             />
@@ -270,19 +337,55 @@ const NewDrive = () => {
         <div>
           Job Criteria Details:
           <div>
-            <Select name={"genderPreference"} value={jobDetails.genderPreference} array={genderPreferences} fun={handleChange} />
-            
-            <Select name={"qualification"} value={jobDetails.qualification} array={qualifications} fun={handleChange} />
-            
-            <Select name={"stream"} value={jobDetails.stream} array={streams} fun={handleChange} />
-            
-            <Select name={"yearOfPassing"} value={jobDetails.yearOfPassing} array={yearOfPassings} fun={handleChange} />
-            
-            <Select name={"backlogAllowed"} value={jobDetails.backlogAllowed} array={backlogAlloweds} fun={handleChange} />
+            <Select
+              name={"genderPreference"}
+              value={jobDetails.genderPreference}
+              array={genderPreferences}
+              fun={handleChange}
+              error={jobErrors.genderPreference}
+              required={true}
+            />
+
+            <Select
+              name={"qualification"}
+              value={jobDetails.qualification}
+              array={qualifications}
+              fun={handleChange}
+              error={jobErrors.qualification}
+              required={true}
+            />
+
+            <Select
+              name={"stream"}
+              value={jobDetails.stream}
+              array={streams}
+              fun={handleChange}
+              error={jobErrors.stream}
+              required={true}
+            />
+
+            <Select
+              name={"yearOfPassing"}
+              value={jobDetails.yearOfPassing}
+              array={yearOfPassings}
+              fun={handleChange}
+              error={jobErrors.yearOfPassing}
+              required={true}
+            />
+
+            <Select
+              name={"backlogAllowed"}
+              value={jobDetails.backlogAllowed}
+              array={backlogAlloweds}
+              fun={handleChange}
+              error={jobErrors.backlogAllowed}
+              required={true}
+            />
             <Input
               name={"sslcPer"}
               type={"text"}
               value={jobDetails.sslcPer}
+              error={jobErrors.sslcPer}
               required={true}
               fun={handleChange}
             />
@@ -290,17 +393,26 @@ const NewDrive = () => {
               name={"diplomaPer"}
               type={"text"}
               value={jobDetails.diplomaPer}
+              error={jobErrors.diplomaPer}
               required={true}
               fun={handleChange}
             />
             <Input
               name={"graduateMinPer"}
               type={"text"}
+              error={jobErrors.graduateMinPer}
               required={true}
               value={jobDetails.graduateMinPer}
               fun={handleChange}
             />
-            <Select name={"gapInEducation"} value={jobDetails.gapInEducation} array={gapInEducations} fun={handleChange} />
+            <Select
+              name={"gapInEducation"}
+              value={jobDetails.gapInEducation}
+              array={gapInEducations}
+              fun={handleChange}
+              error={jobErrors.gapInEducation}
+              required={true}
+            />
             <Input
               name={"noOfPositions"}
               type={"text"}
@@ -317,29 +429,41 @@ const NewDrive = () => {
               type={"text"}
               value={jobDetails.interviewRounds}
               fun={handleChange}
+              error={jobErrors.interviewRounds}
               required={true}
             />
-            <Select name={"modeOfInterview"} value={jobDetails.modeOfInterview} array={modeOfInterviews} fun={handleChange} />
-            
-            {/* <select value={jobDetails.serviceAgreement}>
-                <option onChange={()=>setJobDetails(prev=>({...prev,serviceAgreement:"yes"}))}>"yes"</option>
-                <option onChange={()=>setJobDetails(prev=>({...prev,serviceAgreement:"No"}))}>"No"</option>
-            </select> */}
-            {/* <Select name={"serviceAgreement"} value={jobDetails.serviceAgreement} array={serviceAgreements} fun={handleChange} /> */}
+            <Select
+              name={"modeOfInterview"}
+              value={jobDetails.modeOfInterview}
+              array={modeOfInterviews}
+              fun={handleChange}
+              error={jobErrors.modeOfInterview}
+              required={true}
+            />
             <Input
               name={"deposit"}
               type={"text"}
               value={jobDetails.deposit}
               fun={handleChange}
             />
-            <Select name={"relocation"} value={jobDetails.relocation} array={relocations} fun={handleChange} />
+            <Select
+              name={"relocation"}
+              value={jobDetails.relocation}
+              array={relocations}
+              fun={handleChange}
+            />
             <Input
               name={"certificateSubmission"}
               type={"text"}
               value={jobDetails.certificateSubmission}
               fun={handleChange}
             />
-            <Select name={"shift"} value={jobDetails.shift} array={shifts} fun={handleChange} />
+            <Select
+              name={"shift"}
+              value={jobDetails.shift}
+              array={shifts}
+              fun={handleChange}
+            />
             <Input
               name={"blockingPeriod"}
               type={"text"}

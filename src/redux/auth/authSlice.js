@@ -28,7 +28,7 @@ const authSlice=createSlice({
             state.role=action.payload
         },
         logout:(state)=>{
-            state=initialState
+           return {...initialState,user:null,isAuthenticated:false}
         },
     }
 })

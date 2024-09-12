@@ -6,8 +6,8 @@ const Input = ({name, type, value, fun,required=false,error=null}) => {
       <div style={{fontSize:"15px"}}>
       {name}{required && <span style={{color:"red"}}>*</span>}
       </div>
-      <input type={type} name={name} value={value} onChange={fun}   />
-      {error && <p style={{color:"red"}}>{error}</p>}
+      <input type={type} name={name} value={value} onChange={fun} style={{padding:"4px",fontSize:"18px",borderRadius:"3px"}} />
+      {error && <span style={{ color: "red" ,fontSize:"15px"}}>{error}</span>}
     </div>
   );
 };

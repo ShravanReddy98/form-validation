@@ -10,14 +10,19 @@ const Home = () => {
   useEffect(() => {
     dispatch(actions.fetchDrivesRequest());
   }, [dispatch]);
+
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+  
   return (
     <div>
         <h2>Drives</h2>
         <div>
         {drives.map((drive) => (
           <div style={{backgroundColor:"whitesmoke",border:"2px solid grey",margin:"10px",padding:"10px"}}>
-            {Object.values(drive).map((field) => (
-              <div>{field}</div>
+            {Object.entries(drive).map(([field,value]) => (
+              <div>{field} : {value}</div>
             ))}
           </div>
         ))}
