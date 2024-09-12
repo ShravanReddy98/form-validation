@@ -7,10 +7,10 @@ import Select from "../utils/Select";
 
 const dummyData = {
   jobId: "1463",
-  companyName: "Aatral Technologies India Pvt ltd",
+  companyName: "Aastra Technologies",
   jobTitle: "Backend Developer",
   jobRole: "Backend Developer",
-  jobLocation: "Bengaluru",
+  jobLocation: "bangalore",
   Package: "Upto 6 LPA",
   skills: [
     "data structures and algorithms",
@@ -20,15 +20,15 @@ const dummyData = {
     "Springboot",
     "Mysql",
   ],
-  genderPreference: "Male & Female",
-  qualification: "BE/B.Tech",
-  yearOfPassing: "2022, 2023",
-  stream: "",
-  backlogAllowed: false,
+  genderPreference: "male & female",
+  qualification: "BCA",
+  yearOfPassing: "2022",
+  stream: "mechanical",
+  backlogAllowed: "yes",
   sslcPer: "80",
   diplomaPer: "80",
   graduateMinPer: "80",
-  gapInEducation: true,
+  gapInEducation: 'allowed',
   noOfPositions: 5,
   interviewRounds: [
     "Screening Round",
@@ -43,8 +43,8 @@ const dummyData = {
   certificateSubmission: true,
   shifts: "based on project",
   blockingPeriod: "6 months",
-  firstRoundDate: "23-09-2024 ",
-  expiresIn: "19-09-2024 : 19:15",
+  firstRoundDate: "2024-09-23",
+  expiresIn: "2024-09-22",
   minEmployabilityScore: "50",
   interviewType: "F2F",
   UploadJd: "",
@@ -147,12 +147,12 @@ const NewDrive = () => {
       ...prev,
       [name]: null,
     }));
-    console.log(jobErrors[name]);
+    console.log(jobDetails[name],jobErrors[name]);
   };
 
   const handleAddDummy = () => {
-    setJobDetails({ ...dummyData });
-    setJobErrors(initialErrors);
+    setJobDetails(prev=>({...prev, ...dummyData }));
+    setJobErrors(prev=>({...prev,initialErrors}));
   };
 
   const validate = (field, value) => {
